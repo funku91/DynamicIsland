@@ -17,7 +17,7 @@ public class PlayerTabOverlayMixin {
         DynamicIslandHud.setTarget(visible ? 1f : 0f);
     }
 
-    @Inject(method = "renderTabList", at = @At("HEAD"), require = 1)
+    @Inject(method = "render", at = @At("HEAD"), require = 1)
     private void dynamicIsland$onRenderHead(GuiGraphicsExtractor graphics, int screenWidth, CallbackInfo ci) {
         float progress = DynamicIslandHud.getProgress();
 
@@ -37,7 +37,7 @@ public class PlayerTabOverlayMixin {
         pose.translate(-centerX, 0.0f);
     }
 
-    @Inject(method = "renderTabList", at = @At("RETURN"), require = 1)
+    @Inject(method = "render", at = @At("RETURN"), require = 1)
     private void dynamicIsland$onRenderReturn(GuiGraphicsExtractor graphics, int screenWidth, CallbackInfo ci) {
         if (DynamicIslandHud.getProgress() > 0.01f) {
             graphics.pose().popMatrix();
