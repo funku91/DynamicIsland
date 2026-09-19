@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "dynamic-island",
+  "version": "${version}",
+  "name": "Dynamic Island UI",
+  "description": "灵动岛 UI，应用于 Tab 菜单并带过渡动画。",
+  "authors": ["You"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.example.dynamicisland.DynamicIslandClient"
+    ]
+  },
+  "mixins": [
+    "dynamic-island.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "fabric-api": ">=0.149.1+26.1.2",
+    "minecraft": "~26.1.2",
+    "java": ">=25"
+  }
+}
