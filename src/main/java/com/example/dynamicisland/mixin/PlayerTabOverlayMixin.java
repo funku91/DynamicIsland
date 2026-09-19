@@ -19,7 +19,7 @@ public class PlayerTabOverlayMixin {
         DynamicIslandHud.setTarget(visible ? 1f : 0f);
     }
 
-    @Inject(method = "extractRenderState", at = @At("HEAD"), require = 1)
+    @Inject(method = "extractRenderState", at = @At("HEAD"), require = 1, cancellable = true)
     private void dynamicIsland$onRenderHead(
             GuiGraphicsExtractor graphics,
             int screenWidth,
