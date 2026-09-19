@@ -30,8 +30,17 @@ jobs:
       - name: Build
         run: ./gradlew build --no-daemon
 
-      - name: Upload artifact
+      - name: List build outputs
+        if: always()
+        run: ls -la build/libs/ || echo "build/libs not found"
+
+      - name: Upload build artifacts
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: dynamic-island
-          path: build/libs/*.jar
+          name: dynamic-island-${{ github.sha }}
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+          if-no-files-found: error
+          retention-days: 30
