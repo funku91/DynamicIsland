@@ -70,4 +70,8 @@ public class DynamicIslandHud {
             g.fill(x + w - i - 1, y + h - r, x + w - i, y + h - r + dy, color);
         }
     }
+    // 供 Mixin 读取当前动画进度
+    public static float getProgress() {
+        return progress;
+    }
 }
