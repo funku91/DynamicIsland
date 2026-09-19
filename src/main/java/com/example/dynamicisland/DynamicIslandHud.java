@@ -1,34 +1,31 @@
 package com.example.dynamicisland;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.util.Util;
 
 public class DynamicIslandHud {
 
-    private static float progress = 0f;   // 0 = 收起，1 = 展开
+    private static float progress = 0f;
     private static float target = 0f;
     private static boolean initialized = false;
     private static long lastMillis;
 
-    /** 由 PlayerListHudMixin 调用 */
     public static void setTarget(float t) {
         target = t;
     }
 
     public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (client.player == null || client.options.hudHidden) return;
 
-        // 时间用现实世界毫秒
         long now = Util.getMillis();
         if (!initialized) { lastMillis = now; initialized = true; }
         float dt = (now - lastMillis) / 1000f;
         lastMillis = now;
 
-        // 平滑动画
         float speed = 8f;
         progress += (target - progress) * Math.min(1f, dt * speed);
         if (Math.abs(target - progress) < 0.005f) progress = target;
@@ -41,26 +38,21 @@ public class DynamicIslandHud {
         int y = 8;
 
         int alpha = (int) (255 * progress);
-        // ARGB（1.21.6+ 文本颜色必须带 alpha）
         int bgColor   = (alpha << 24) | 0x1A1A1A;
         int textColor = (alpha << 24) | 0xFFFFFF;
 
         drawRoundedRect(graphics, x, y, width, height, 12, bgColor);
 
-        int playerCount = client.getNetworkHandler() != null
-                ? client.getNetworkHandler().getPlayerList().size()
+        int playerCount = client.getConnection() != null
+                ? client.getConnection().getPlayerInfoMap().size()
                 : 0;
         String text = "玩家列表 " + playerCount;
-        TextRenderer font = client.textRenderer;
-        int textWidth = font.getWidth(text);
-        graphics.text(
-                font,
-                text,
+        Font font = client.font;
+        int textWidth = font.width(text);
+        graphics.text(font, text,
                 x + (width - textWidth) / 2,
                 y + (height - 8) / 2,
-                textColor,
-                true
-        );
+                textColor, true);
     }
 
     private static void drawRoundedRect(GuiGraphicsExtractor g,
