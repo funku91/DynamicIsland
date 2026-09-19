@@ -19,7 +19,7 @@ public class DynamicIslandHud {
 
     public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.options.hudHidden) return;
+        if (client.player == null || client.options.hideGui) return;
 
         long now = Util.getMillis();
         if (!initialized) { lastMillis = now; initialized = true; }
@@ -31,7 +31,7 @@ public class DynamicIslandHud {
         if (Math.abs(target - progress) < 0.005f) progress = target;
         if (progress <= 0.01f) return;
 
-        int screenWidth = client.getWindow().getScaledWidth();
+        int screenWidth = client.getWindow().getGuiScaledWidth();
         int baseWidth = 44, expandedWidth = 180, height = 24;
         int width = (int) (baseWidth + (expandedWidth - baseWidth) * progress);
         int x = (screenWidth - width) / 2;
@@ -44,7 +44,7 @@ public class DynamicIslandHud {
         drawRoundedRect(graphics, x, y, width, height, 12, bgColor);
 
         int playerCount = client.getConnection() != null
-                ? client.getConnection().getPlayerInfoMap().size()
+                ? client.getConnection().getOnlinePlayers().size()
                 : 0;
         String text = "玩家列表 " + playerCount;
         Font font = client.font;
