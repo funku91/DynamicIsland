@@ -4,7 +4,7 @@
   "package": "com.example.dynamicisland.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PlayerListHudMixin"
+    "PlayerTabOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1
