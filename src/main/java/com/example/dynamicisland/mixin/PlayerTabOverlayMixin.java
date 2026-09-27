@@ -9,6 +9,7 @@ import org.joml.Matrix3x2fStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerTabOverlay.class)
@@ -54,5 +55,27 @@ public class PlayerTabOverlayMixin {
         if (DynamicIslandHud.getProgress() > 0.01f) {
             graphics.pose().popMatrix();
         }
+    }
+
+    // ── 跳过原版 Tab 列表的黑框 ──
+    @Redirect(
+        method = "extractRenderState",
+        at = @At(value = "INVOKE",
+                 target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V")
+    )
+    private void dynamicIsland$skipBackground(GuiGraphicsExtractor graphics,
+                                               int x1, int y1, int x2, int y2,
+                                               int color) {
+        // 表头/主体/表尾的黑框
+        if (color == Integer.MIN_VALUE) {
+            return;
+        }
+        // 每行的小黑条（半透明纯黑）
+        int alpha = (color >>> 24) & 0xFF;
+        int rgb = color & 0xFFFFFF;
+        if (alpha < 255 && rgb == 0) {
+            return;
+        }
+        graphics.fill(x1, y1, x2, y2, color);
     }
 }
