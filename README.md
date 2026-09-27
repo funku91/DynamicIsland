@@ -6,4 +6,7 @@ For setup instructions, please see the [Fabric Documentation page](https://docs.
 
 
 这个mod是由Fabric的实例mod为模板改的
+
+适用于26.1.2 Fabric
+
 Coded by DeepseekV4
