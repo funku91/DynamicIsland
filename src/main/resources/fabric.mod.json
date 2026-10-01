@@ -3,8 +3,8 @@
   "id": "dynamic-island",
   "version": "${version}",
   "name": "Dynamic Island UI",
-  "description": "灵动岛 UI，应用于 Tab 菜单并带过渡动画。",
-  "authors": ["You"],
+  "description": "灵动岛 UI应用于 Tab 菜单并带过渡动画",
+  "authors": ["牙膏"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
