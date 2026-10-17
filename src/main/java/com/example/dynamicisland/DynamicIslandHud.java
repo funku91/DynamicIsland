@@ -17,7 +17,10 @@ public class DynamicIslandHud {
     private static final Identifier SPOTIFY_ICON =
             Identifier.fromNamespaceAndPath("dynamic-island", "textures/gui/spotify.png");
 
-    private static final int ICON_TEX_SIZE = 64;
+    private static final int NETEASE_TEX_SIZE_W = 70;
+    private static final int NETEASE_TEX_SIZE_H = 64;
+    private static final int SPOTIFY_TEX_SIZE_W = 66;
+    private static final int SPOTIFY_TEX_SIZE_H = 64;
 
     private static float progress = 0f;
     private static float target = 0f;
@@ -109,14 +112,25 @@ public class DynamicIslandHud {
             Identifier icon = (player == MediaProcessDetector.Player.NETEASE)
                     ? NETEASE_ICON : SPOTIFY_ICON;
 
-            graphics.blit(
-                RenderPipelines.GUI_TEXTURED,
-                icon,
-                iconX, iconY,
-                0, 0,
-                iconSize, iconSize,
-                ICON_TEX_SIZE, ICON_TEX_SIZE
-            );
+            if (player == MediaProcessDetector.Player.NETEASE) {
+                graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    icon,
+                    iconX, iconY,
+                    0, 0,
+                    iconSize, iconSize,
+                    NETEASE_TEX_SIZE_W, NETEASE_TEX_SIZE_H
+                );
+            } else {
+                graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    icon,
+                    iconX, iconY,
+                    0, 0,
+                    iconSize, iconSize,
+                    SPOTIFY_TEX_SIZE_W, SPOTIFY_TEX_SIZE_H
+                );
+            }
 
             int countX = x + width - countWidth - iconPadding;
             graphics.text(font, countText, countX, y + (height - 8) / 2, countColor, true);
