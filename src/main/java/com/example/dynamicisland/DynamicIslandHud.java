@@ -60,14 +60,10 @@ public class DynamicIslandHud {
         }
 
         int x = (screenWidth - width) / 2;
-<<<<<<< Updated upstream
 
         int baseY = 6;
         int expandedY = 30;
         int y = (int) (baseY + (expandedY - baseY) * eased);
-=======
-        int y = 8;
->>>>>>> Stashed changes
 
         // ── 纯黑药丸 ──
         int bodyColor = 0xFF000000;
@@ -80,36 +76,7 @@ public class DynamicIslandHud {
 
         // ── 内容 ──
         if (eased < 0.5f) {
-<<<<<<< Updated upstream
             renderCompact(graphics, client, x, y, width, height, eased);
-=======
-            // 收起状态：显示玩家数量，透明度随展开渐隐
-            int playerCount = client.getConnection() != null
-                    ? client.getConnection().getListedOnlinePlayers().size()
-                    : 0;
-            String text = String.valueOf(playerCount);
-            Font font = client.font;
-            int textWidth = font.width(text);
-            int textAlpha = (int) (255 * (1f - eased * 2f));
-            if (textAlpha > 0) {
-                int color = ARGB.white(textAlpha);
-                graphics.text(font, text,
-                        x + (width - textWidth) / 2,
-                        y + (height - 8) / 2,
-                        color, true);
-            }
-        } else {
-            // 展开状态：显示 "Tab" 提示，随展开渐显
-            Font font = client.font;
-            Component label = Component.literal("Tab");
-            int textWidth = font.width(label);
-            int alpha = (int)(255 * (eased - 0.5f) * 2f);
-            int color = ARGB.white(alpha);
-            graphics.text(font, label,
-                    x + (width - textWidth) / 2,
-                    y + (height - 8) / 2,
-                    color, true);
->>>>>>> Stashed changes
         }
         // 展开时玩家列表由原版 Tab 绘制在这个黑背景上
     }
@@ -177,7 +144,6 @@ public class DynamicIslandHud {
         float p = t - 1f;
         return 1f + c3 * p * p * p + c1 * p * p;
     }
-<<<<<<< Updated upstream
 
     private static void drawRoundedRect(GuiGraphicsExtractor g,
                                         int x, int y, int w, int h,
@@ -199,6 +165,4 @@ public class DynamicIslandHud {
             g.fill(x + w - i - 1, y + h - r, x + w - i, y + h - r + dy, color);
         }
     }
-=======
->>>>>>> Stashed changes
 }
