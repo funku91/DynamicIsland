@@ -4,21 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
 
 public class DynamicIslandHud {
-
-    private static final Identifier NETEASE_ICON =
-            Identifier.fromNamespaceAndPath("dynamic-island", "textures/gui/netease.png");
-    private static final Identifier SPOTIFY_ICON =
-            Identifier.fromNamespaceAndPath("dynamic-island", "textures/gui/spotify.png");
-
-    // 图片原始尺寸，按你实际图片改
-    private static final int ICON_TEX_SIZE = 64;
 
     private static float progress = 0f;
     private static float target = 0f;
@@ -44,7 +33,6 @@ public class DynamicIslandHud {
         float eased = easeOutBack(progress);
 
         int screenWidth = client.getWindow().getGuiScaledWidth();
-        int screenHeight = client.getWindow().getGuiScaledHeight();
 
         int baseWidth     = 90;
         int expandedWidth = 340;
@@ -81,7 +69,7 @@ public class DynamicIslandHud {
         // 展开时玩家列表由原版 Tab 绘制在这个黑背景上
     }
 
-    /** 收起状态：左侧音乐图标 + 右侧玩家数量 */
+    /** 收起状态：显示玩家数量 */
     private static void renderCompact(GuiGraphicsExtractor graphics,
                                       Minecraft client,
                                       int x, int y, int width, int height,
@@ -96,38 +84,12 @@ public class DynamicIslandHud {
                 : 0;
         String countText = String.valueOf(playerCount);
         int countWidth = font.width(countText);
-        int countColor = (textAlpha << 24) | 0xFFFFFF;
+        int countColor = ARGB.white(textAlpha);
 
-        MediaProcessDetector.Player player = MediaProcessDetector.getCurrentPlayer();
-        boolean hasIcon = player != MediaProcessDetector.Player.NONE;
-
-        int iconSize = height - 10;
-        int iconPadding = 7;
-
-        if (hasIcon) {
-            int iconX = x + iconPadding;
-            int iconY = y + (height - iconSize) / 2;
-
-            Identifier icon = (player == MediaProcessDetector.Player.NETEASE)
-                    ? NETEASE_ICON : SPOTIFY_ICON;
-
-            graphics.blit(
-                RenderPipelines.GUI_TEXTURED,
-                icon,
-                iconX, iconY,
-                0, 0,
-                iconSize, iconSize,
-                ICON_TEX_SIZE, ICON_TEX_SIZE
-            );
-
-            int countX = x + width - countWidth - iconPadding;
-            graphics.text(font, countText, countX, y + (height - 8) / 2, countColor, true);
-        } else {
-            graphics.text(font, countText,
-                    x + (width - countWidth) / 2,
-                    y + (height - 8) / 2,
-                    countColor, true);
-        }
+        graphics.text(font, countText,
+                x + (width - countWidth) / 2,
+                y + (height - 8) / 2,
+                countColor, true);
     }
 
     private static void drawTopHighlight(GuiGraphicsExtractor g,
@@ -136,13 +98,6 @@ public class DynamicIslandHud {
         int thickness = Math.max(1, h / 20);
         int inset = r / 2;
         g.fill(x + inset, y, x + w - inset, y + thickness, color);
-    }
-
-    private static float easeOutBack(float t) {
-        float c1 = 1.70158f;
-        float c3 = c1 + 1f;
-        float p = t - 1f;
-        return 1f + c3 * p * p * p + c1 * p * p;
     }
 
     private static void drawRoundedRect(GuiGraphicsExtractor g,
@@ -164,5 +119,12 @@ public class DynamicIslandHud {
             g.fill(x + i, y + h - r, x + i + 1, y + h - r + dy, color);
             g.fill(x + w - i - 1, y + h - r, x + w - i, y + h - r + dy, color);
         }
+    }
+
+    private static float easeOutBack(float t) {
+        float c1 = 1.70158f;
+        float c3 = c1 + 1f;
+        float p = t - 1f;
+        return 1f + c3 * p * p * p + c1 * p * p;
     }
 }
