@@ -1,5 +1,7 @@
 package com.example.dynamicisland.mixin;
 
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import com.example.dynamicisland.DynamicIslandHud;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
