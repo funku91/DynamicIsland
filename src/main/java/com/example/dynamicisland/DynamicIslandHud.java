@@ -102,12 +102,29 @@ public class DynamicIslandHud {
         MediaProcessDetector.Player player = MediaProcessDetector.getCurrentPlayer();
         boolean hasIcon = player != MediaProcessDetector.Player.NONE;
 
-        int iconSize = height - 10;
         int iconPadding = 7;
 
         if (hasIcon) {
+            // 限制图标尺寸，不超过纹理原始大小，保持宽高比
+            int maxIconHeight = height - 10;
+            int maxIconWidth = (player == MediaProcessDetector.Player.NETEASE)
+                    ? NETEASE_TEX_SIZE_W : SPOTIFY_TEX_SIZE_W;
+            int maxIconHeightForTex = (player == MediaProcessDetector.Player.NETEASE)
+                    ? NETEASE_TEX_SIZE_H : SPOTIFY_TEX_SIZE_H;
+
+            int iconW, iconH;
+            if (maxIconHeight >= maxIconHeightForTex) {
+                // 按高度填满，宽度按比例
+                iconH = maxIconHeightForTex;
+                iconW = maxIconWidth;
+            } else {
+                // 按宽度填满，高度按比例
+                iconW = maxIconHeight;
+                iconH = (int) (maxIconHeight * ((float) maxIconHeightForTex / maxIconWidth));
+            }
+
             int iconX = x + iconPadding;
-            int iconY = y + (height - iconSize) / 2;
+            int iconY = y + (height - iconH) / 2;
 
             Identifier icon = (player == MediaProcessDetector.Player.NETEASE)
                     ? NETEASE_ICON : SPOTIFY_ICON;
@@ -118,7 +135,7 @@ public class DynamicIslandHud {
                     icon,
                     iconX, iconY,
                     0, 0,
-                    iconSize, iconSize,
+                    iconW, iconH,
                     NETEASE_TEX_SIZE_W, NETEASE_TEX_SIZE_H
                 );
             } else {
@@ -127,7 +144,7 @@ public class DynamicIslandHud {
                     icon,
                     iconX, iconY,
                     0, 0,
-                    iconSize, iconSize,
+                    iconW, iconH,
                     SPOTIFY_TEX_SIZE_W, SPOTIFY_TEX_SIZE_H
                 );
             }
